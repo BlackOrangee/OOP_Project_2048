@@ -52,18 +52,20 @@ void GameBoard::addTile()
 	}
 
 	// Seed the random number generator with the current time
-	srand(time(NULL));
+	random_device rd;  // Will be used to obtain a seed for the random number engine
+	mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
+	uniform_int_distribution<> dis(0, emptyTiles.size() - 1);
 
 	// Generate a random index within the range of available empty tiles
-	int randomIndex = rand() % emptyTiles.size();
+	int randomIndex = dis(gen);
 
 	// Determine the value of the new tile (90% chance of 2, 10% chance of 4)
-	int tileValue = (rand() % 100 >= 90) ? 4 : 2;
+	uniform_int_distribution<> dis2(0, 100);
+	int tileValue = (dis2(gen) >= 90) ? 4 : 2;
 
 	// Set the value of the randomly chosen empty tile to the determined value
 	tiles[emptyTiles[randomIndex]->getRow()][emptyTiles[randomIndex]->getCol()]->setValue(tileValue);
 }
-
 
 
 // Methods to move tiles in different directions, return true if any move was made.
@@ -76,7 +78,7 @@ bool GameBoard::moveLeft()
 		List* list = collectRow(i);
 
 		// Create an empty list to store modified tiles
-		List* list2 = new List();
+		auto* list2 = new List();
 
 		do
 		{
@@ -127,7 +129,9 @@ bool GameBoard::moveLeft()
 				tiles[i][j]->setValue(0);
 			}
 		}
+		delete list;
 	}
+	
 	// Return true to indicate a successful move
 	return true;
 }
@@ -141,7 +145,7 @@ bool GameBoard::moveRight()
 		List* list = collectRow(i);
 
 		// Create a new list to store merged or shifted tiles
-		List* list2 = new List();
+		auto* list2 = new List();
 
 		// Iterate through the collected tiles
 		do
@@ -191,6 +195,7 @@ bool GameBoard::moveRight()
 				tiles[i][j]->setValue(0);
 			}
 		}
+		delete list;
 	}
 	// Return true to indicate a successful move
 	return true;
@@ -206,7 +211,7 @@ bool GameBoard::moveUp()
 		List* list = collectCol(j);
 
 		// Create a new list to store merged or shifted tiles
-		List* list2 = new List();
+		auto* list2 = new List();
 
 		// Iterate through the collected tiles
 		do
@@ -258,6 +263,7 @@ bool GameBoard::moveUp()
 				tiles[i][j]->setValue(0);
 			}
 		}
+		delete list;
 	}
 	// Return true to indicate a successful move
 	return true;
@@ -273,7 +279,7 @@ bool GameBoard::moveDown()
 		List* list = collectCol(j);
 
 		// Create a new list to store merged or shifted tiles
-		List* list2 = new List();
+		auto* list2 = new List();
 
 		// Iterate through the collected tiles
 		do
@@ -325,6 +331,7 @@ bool GameBoard::moveDown()
 				tiles[i][j]->setValue(0);
 			}
 		}
+		delete list;
 	}
 	// Return true to indicate a successful move
 	return true;
@@ -333,7 +340,6 @@ bool GameBoard::moveDown()
 
 // Check if there are any legal moves left on the game board.
 // return true if there is at least one valid move, otherwise false.
-//
 bool GameBoard::hasMoves()
 {
 	// Iterate through each row and column of the game board
@@ -437,14 +443,10 @@ int GameBoard::displayTilesSupporter(int tileValue, int& bgColor, int& textColor
 		textColor = 5; // Gray text
 		break;
 	case 2:
-		// For tiles with a value of 2, set a light gray background with black text.
+	case 4:
+		// For tiles with a value of 2 and 4 set a light gray background with black text.
 		bgColor = 7; // Light gray background
 		textColor = 0; // Black text
-		break;
-	case 4:
-		// For tiles with a value of 4, use the same colors as for 2.
-		bgColor = 7;
-		textColor = 0;
 		break;
 	case 8:
 		// Continue this pattern for other tile values, setting appropriate colors.
@@ -506,6 +508,7 @@ void GameBoard::displayBoard()
 		{
 			cout << "\n"; // Add a newline before the first row.
 		}
+
 		for (int col = 0; col < size; ++col)
 		{
 			if (col == 0)
@@ -518,8 +521,6 @@ void GameBoard::displayBoard()
 
 			// Get the tile value and associated colors using the displayTilesSupporter function.
 			int tileValue = displayTilesSupporter(tiles[row][col]->getValue(), bgColor, textColor);
-
-			char separator = '|';
 
 			// Get a handle to the console to manipulate text attributes.
 			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -545,7 +546,7 @@ void GameBoard::displayBoard()
 			SetCurrentConsoleFontEx(hConsole, FALSE, &fontInfo);
 
 			// Set the text attributes to display the tile with the chosen colors.
-			SetConsoleTextAttribute(hConsole, textColor | (bgColor << 4));
+			SetConsoleTextAttribute(hConsole, WORD(textColor | (bgColor << 4)));
 
 			// Display the tile's value with appropriate spacing.
 			if (tileValue < 10)
@@ -575,7 +576,7 @@ void GameBoard::displayBoard()
 List* GameBoard::collectRow(int i)
 {
 	// Create a new List to collect the tiles from the specified row.
-	List* list = new List(new Tile(tiles[i][0]->getValue(), tiles[i][0]->getRow(), tiles[i][0]->getCol()));
+	auto* list = new List(new Tile(tiles[i][0]->getValue(), tiles[i][0]->getRow(), tiles[i][0]->getCol()));
 
 	// Set the value of the first tile in the row to 0 (indicating an empty tile).
 	tiles[i][0]->setValue(0);
@@ -598,7 +599,7 @@ List* GameBoard::collectRow(int i)
 List* GameBoard::collectCol(int j)
 {
 	// Create a new List to collect the tiles from the specified col.
-	List* list = new List(new Tile(tiles[0][j]->getValue(), tiles[0][j]->getRow(), tiles[0][j]->getCol()));
+	auto* list = new List(new Tile(tiles[0][j]->getValue(), tiles[0][j]->getRow(), tiles[0][j]->getCol()));
 
 	// Set the value of the first tile in the row to 0 (indicating an empty tile).
 	tiles[0][j]->setValue(0);

@@ -11,7 +11,8 @@ Tile::Tile(int value, int row, int col)
 // Getter method to retrieve the value of the tile.
 int Tile::getValue()
 {
-    if (this == nullptr)
+    Tile const* a = this;
+    if (a == nullptr)
     {
         return -1;
     }
