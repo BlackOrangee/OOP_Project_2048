@@ -218,7 +218,7 @@ bool Game::handleInput()
 		return board->moveDown();
 
 	case '`':
-		// Exit the game when the backtick key (`) is pressed
+		// Exit the game when the back tick key (`) is pressed
 		gameOver = true;
 		return false;
 
@@ -338,7 +338,7 @@ void Game::displayInstructions()
 	arr.push_back(L"\n\t\t\t\t\t  ______   ______   ______");
 	arr.push_back(L"\n\t\t\t\t\t | A    | | S    | | D    |");
 	arr.push_back(L"\n\t\t\t\t\t |__ ___| |__ ___| |__ ___|\n\n\n");
-	arr.push_back(L"\n\t\t\t\t\t Use keyboard to controll\t\n\n\n");
+	arr.push_back(L"\n\t\t\t\t\t Use keyboard to control\t\n\n\n");
 	arr.push_back(L"\n\t\t\t\t\t   Press F to continue\t");
 
 	// Display a brief instruction on using the keyboard for control

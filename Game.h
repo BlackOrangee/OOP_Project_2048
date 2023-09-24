@@ -20,7 +20,7 @@ public:
     // Starts the game.
     void start();
 
-    // Main game loop where the gameplay happens.
+    // Main game loop where the game play happens.
     void play();
 
     // Displays the main menu.
