@@ -1,0 +1,17 @@
+﻿  2048_VS_2022.cpp
+  Game.cpp
+E:\cw2\2048_VS_2022\Game.cpp(278,36): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+E:\cw2\2048_VS_2022\Game.cpp(299,42): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+E:\cw2\2048_VS_2022\Game.cpp(356,41): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+E:\cw2\2048_VS_2022\Game.cpp(431,42): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+E:\cw2\2048_VS_2022\Game.cpp(436,42): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+  GameBoard.cpp
+E:\cw2\2048_VS_2022\GameBoard.cpp(57,54): warning C4267: 'argument': conversion from 'size_t' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  List.cpp
+  Tile.cpp
+  Generating Code...
+  2048_VS_2022.vcxproj -> E:\cw2\2048_VS_2022\x64\Debug\2048_VS_2022.exe
